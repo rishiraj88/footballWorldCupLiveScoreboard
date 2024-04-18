@@ -1,20 +1,31 @@
+import lombok.Data;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sr.entity.Team;
+import sr.game.football.FootballGame;
 import sr.game.football.FootballScoreboard;
+import sr.util.FootballGameComparator;
+
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
 public class FootballScoreboardTests {
     @Spy
     static private FootballScoreboard scoreboard;
+
     static private Team homeTeam = null;
     static private Team awayTeam = null;
+    private PriorityBlockingQueue<FootballGame> board = new PriorityBlockingQueue<>(7, FootballGameComparator.get());
 
     @Test
     @DisplayName("positive: start game")
@@ -47,10 +58,51 @@ public class FootballScoreboardTests {
     @Test
     @DisplayName("positive: update scores")
     public void updateScoresTest() {
+        when(scoreboard.getBoard()).thenReturn(board);
+        startGames((short) 9);
+        assignTeams();
         scoreboard.updateScore(homeTeam, (short) 2, awayTeam, (short) 7);
-        fail();
     }
 
+    @Test
+    @DisplayName("negative: update scores with home team null")
+    public void updateScoresWithHomeTeamNullTest() {
+        startGames((short) 7);
+        assignTeams();
+        homeTeam = null;
+        when(scoreboard.getBoard()).thenReturn(board);
+        System.out.print("(homeTeam: " + homeTeam);
+        System.out.println(" ; awayTeam: " + awayTeam + ")");
+        scoreboard.updateScore(null, (short) 2, awayTeam, (short) 7);
+    }
+
+    @Test
+    @DisplayName("negative: update scores with away team null")
+    public void updateScoresWithAwayTeamNullTest() {
+        startGames((short) 7);
+        assignTeams();
+        awayTeam = null;
+        System.out.print("(homeTeam: " + homeTeam);
+        System.out.println(" ; awayTeam: " + awayTeam + ")");
+        when(scoreboard.getBoard()).thenReturn(board);
+        scoreboard.updateScore(homeTeam, (short) 2, awayTeam, (short) 7);
+    }
+
+    @Test
+    @DisplayName("negative: make the score of home team negative")
+    public void updateScoresOfHomeTeamToNegativeTest() {
+        startGames((short) 7);
+        assignTeams();
+        assertThrows(IllegalArgumentException.class, () -> scoreboard.updateScore(null, (short) -1, awayTeam, (short) 7));
+    }
+
+    @Test
+    @DisplayName("negative: make the score of away team negative")
+    public void updateScoresOfAwayTeamToNegativeTest() {
+        startGames((short) 7);
+        assignTeams();
+        assertThrows(IllegalArgumentException.class, () -> scoreboard.updateScore(null, (short) 5, awayTeam, (short) -125));
+    }
     @Test
     @DisplayName("positive: finish game")
     public void finishGameTest() {
@@ -64,6 +116,49 @@ public class FootballScoreboardTests {
         scoreboard.getScoreboardSummary();
         fail();
     }
+
+    private Set<GameMatch> startGames(short nGames) {
+        String[] allTeams = {"Mexico", "Canada", "Spain", "Brazil", "Germany", "France", "Uruguay", "Italy", "Argentina", "Australia"};
+        String teamOne, teamTwo;
+        Random random = new Random();
+        matchSet = new HashSet<>();
+        for (short ctr = 0; matchSet.size() < nGames; ctr++) {
+            int i = random.nextInt(allTeams.length);
+            int j = random.nextInt(allTeams.length);
+            while (j == i) j = random.nextInt(allTeams.length);
+            teamOne = allTeams[i];
+            teamTwo = allTeams[j];
+            if (matchSet.add(new GameMatch(teamOne, teamTwo))) {
+                //   scoreboard.startGame(new Team(teamOne), new Team(teamTwo));
+                boolean gameStarted = board.offer(new FootballGame(new Team(teamOne), new Team(teamTwo), true));
+            }
+            board.stream().forEach(game -> System.out.println(game + " added!"));
+        }
+        return matchSet;
+    }
+
+    private Team[] assignTeams() {
+        GameMatch matchPair = matchSet.stream().findAny().get();
+        homeTeam = new Team(matchPair.getHome());
+        awayTeam = new Team(matchPair.getAway());
+        System.out.print("assignteams:: (homeTeam: " + homeTeam);
+        System.out.println(" ; awayTeam: " + awayTeam + ")");
+        return new Team[]{homeTeam, awayTeam};
+    }
+
+    @Data
+    private static class GameMatch {
+        String home;
+        String away;
+
+        public GameMatch(String teamOne, String teamTwo) {
+            home = teamOne;
+            away = teamTwo;
+        }
+    }
+
+    private Set<GameMatch> matchSet = startGames((short) 7);
+
 }
 
 
