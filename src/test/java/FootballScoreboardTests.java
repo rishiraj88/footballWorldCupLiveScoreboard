@@ -30,7 +30,7 @@ public class FootballScoreboardTests {
     private PriorityBlockingQueue<FootballGame> board = new PriorityBlockingQueue<>(7, FootballGameComparator.get());
 
     @Test
-    @DisplayName("positive: start game")
+    @DisplayName("Start game: positive")
     public void startGameTest() {
         homeTeam = new Team("Mexico");
         awayTeam = new Team("Canada");
@@ -38,27 +38,27 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("negative: start game with home team as null")
+    @DisplayName("Start game: negative: with home team as null")
     public void startGameWithHomeTeamNameNullTest() {
         awayTeam = new Team("Canada");
         assertThrows(IllegalArgumentException.class, () -> scoreboard.startGame(null, awayTeam));
     }
 
     @Test
-    @DisplayName("negative: start game with away team as null")
+    @DisplayName("Start game: negative: with away team as null")
     public void startGameWithAwayTeamNameNullTest() {
         homeTeam = new Team("Canada");
         assertThrows(IllegalArgumentException.class, () -> scoreboard.startGame(homeTeam, null));
     }
 
     @Test
-    @DisplayName("negative: start game with both teams as null")
+    @DisplayName("Start game: negative: with both teams as null")
     public void startGameWithBothTeamNamesNullTest() {
         assertThrows(IllegalArgumentException.class, () -> scoreboard.startGame(null, null));
     }
 
     @Test
-    @DisplayName("positive: update scores")
+    @DisplayName("Update scores: positive")
     public void updateScoresTest() {
         when(scoreboard.getBoard()).thenReturn(board);
         startGames((short) 9);
@@ -67,7 +67,7 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("negative: update scores with home team null")
+    @DisplayName("Update scores: negative: with home team null")
     public void updateScoresWithHomeTeamNullTest() {
         startGames((short) 7);
         assignTeams();
@@ -79,7 +79,7 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("negative: update scores with away team null")
+    @DisplayName("Update scores: negative: with away team null")
     public void updateScoresWithAwayTeamNullTest() {
         startGames((short) 7);
         assignTeams();
@@ -91,7 +91,7 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("negative: make the score of home team negative")
+    @DisplayName("Update scores: negative: make the score of home team negative")
     public void updateScoresOfHomeTeamToNegativeTest() {
         startGames((short) 7);
         assignTeams();
@@ -101,7 +101,7 @@ public class FootballScoreboardTests {
     private Set<GameMatch> matchSet;
 
     @Test
-    @DisplayName("negative: make the score of away team negative")
+    @DisplayName("Update scores: negative: make the score of away team negative")
     public void updateScoresOfAwayTeamToNegativeTest() {
         startGames((short) 7);
         assignTeams();
@@ -110,7 +110,7 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("positive: finish at least one game")
+    @DisplayName("Finish game: positive: finish at least one game")
     public void finishGameTest() {
         when(scoreboard.getBoard()).thenReturn(board);
         startGames((short) 6);
@@ -121,7 +121,7 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("alternate: finish no games")
+    @DisplayName("Finish game: alternate: finish no games")
     public void finishNoGamesTest() {
         when(scoreboard.getBoard()).thenReturn(board);
         startGames((short) 6);
@@ -133,7 +133,7 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("positive: get game score summary")
+    @DisplayName("Game score summary: positive: get summary")
     public void getScoreboardSummaryTest() {
         when(scoreboard.getBoard()).thenReturn(board);
         matchSet = startGames((short) 17);
@@ -142,7 +142,7 @@ public class FootballScoreboardTests {
             updateScores(new Team(teamPair.getHome()), (short) random.nextInt(12), new Team(teamPair.getAway()), (short) random.nextInt(6));
         }
         board.stream().forEach(System.out::print);
-        System.out.println("\nSummarized: " + scoreboard.getScoreboardSummary());
+        System.out.println("\nScore Summary: " + scoreboard.getScoreboardSummary());
     }
 
     private void updateScores(Team homeTeam, short team1Score, Team awayTeam, short team2Score) {
