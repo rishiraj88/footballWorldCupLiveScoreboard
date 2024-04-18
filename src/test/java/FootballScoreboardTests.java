@@ -42,7 +42,6 @@ public class FootballScoreboardTests {
             when(scoreboard.getBoard()).thenReturn(board);
             matchSet = startGames((short) 9);
             assignTeams();
-
         }
 
         @Test
@@ -151,7 +150,7 @@ public class FootballScoreboardTests {
         }
 
         private static record GameMatch(String teamOne, String teamTwo) {
-            }
+        }
         }
 
     @Nested
