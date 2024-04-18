@@ -13,12 +13,15 @@ a data feed library for Live Score Board of Football World Cup
 2. _update score:_ update an ongoing match with inputs: newScoreToShow,newScoreToShow
 3. _finish game:_ Mark an ongoing game (match) as finished and remove it from scoreboard
 4. _get summary:_ return the summaries (teams and scores) of all ongoing games for ingestion to client systems. One
-   possible format is:
+   possible format with unique pairs is:
 
-<pre>homeTeam 0 - awayTeam 0
-homeTeam 0 - awayTeam 0
-homeTeam 0 - awayTeam 0
-homeTeam 0 - awayTeam 0</pre>
+<pre>homeTeam score - awayTeam score
+homeTeam score - awayTeam score
+homeTeam score - awayTeam score
+homeTeam score - awayTeam score</pre>
+
+5. Right now only football games are supported. Support for more game types will require further sophistication of the
+   library.
 
 ## Hint about Internal System
 

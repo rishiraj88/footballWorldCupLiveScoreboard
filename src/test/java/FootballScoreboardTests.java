@@ -159,6 +159,7 @@ public class FootballScoreboardTests {
 
         @BeforeAll
         static void init() {
+            when()
             //initialize teams
             homeTeam = new Team("Mexico");
             awayTeam = new Team("Canada");
