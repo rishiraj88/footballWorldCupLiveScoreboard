@@ -32,7 +32,7 @@ public interface Scoreboard {
      * @param homeTeam
      * @param awayTeam
      */
-    public void finishGame(Team homeTeam, Team awayTeam);
+    public boolean finishGame(Team homeTeam, Team awayTeam);
 
     /**
      * to cook, format and return the score summary data of all ongoing matches for ingestion to

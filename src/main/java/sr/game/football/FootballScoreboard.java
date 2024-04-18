@@ -33,13 +33,16 @@ public class FootballScoreboard implements Scoreboard {
     }
 
     @Override
-    public void finishGame(Team homeTeam, Team awayTeam) {
+    public boolean finishGame(Team homeTeam, Team awayTeam) {
         // mark a game as finished, and make sure to remove it from score board
         System.out.print("finishgame:: (" + homeTeam);
         System.out.println(": " + awayTeam + ")");
         getBoard().stream().filter(footballGame -> footballGame.getTeamOne().equals(homeTeam) && footballGame.getTeamTwo().equals(awayTeam)).findFirst().ifPresent(g -> g.setFinishTime(OffsetDateTime.now()));
         setBoard(getBoard().stream().filter(footballGame -> null == footballGame.getFinishTime()).collect(Collectors.toCollection(() -> new PriorityBlockingQueue<>(7, FootballGameComparator.get()))));
         getBoard().stream().forEach(System.out::println);
+        if (!getBoard().stream().map(footballGame -> footballGame.toString()).collect(Collectors.joining("")).contains("finished"))
+            return false;
+        return true;
     }
 
     @Override
