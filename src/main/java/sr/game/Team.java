@@ -1,4 +1,4 @@
-package sr.entity;
+package sr.game;
 
 public class Team {
     private String name = null;

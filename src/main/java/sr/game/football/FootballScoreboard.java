@@ -1,8 +1,8 @@
 package sr.game.football;
 
 import lombok.Data;
-import sr.entity.Scoreboard;
-import sr.entity.Team;
+import sr.api.Scoreboard;
+import sr.game.Team;
 import sr.util.FootballGameComparator;
 
 import java.time.OffsetDateTime;
@@ -18,7 +18,7 @@ public class FootballScoreboard implements Scoreboard {
     public boolean startGame(Team homeTeam, Team awayTeam) {
         //create and start a game
         // add the ongoing game to score board
-        boolean gameStarted = board.offer(new FootballGame(homeTeam, awayTeam, true));
+        boolean gameStarted = getBoard().offer(new FootballGame(homeTeam, awayTeam, true));
         getBoard().stream().forEach(game -> System.out.println(game + " started!"));
         return gameStarted;
     }

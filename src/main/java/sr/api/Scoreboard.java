@@ -1,9 +1,26 @@
-package sr.entity;
+package sr.api;
+
+import sr.api.factory.ScoreboardFactory;
+import sr.game.Team;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * General type for score board. May be used for various games, such as football, basketball and cricket.
  */
 public interface Scoreboard {
+    public static final Set<Scoreboard> _INSTANCES = new HashSet();
+
+    public static Scoreboard getInstance(String gameName) throws ClassNotFoundException {
+        String fqClassName = "sr.game.football." + gameName + "Scoreboard";
+        Class cls = Class.forName(fqClassName);
+        if (!_INSTANCES.stream().anyMatch(game -> game.getClass().equals(cls))) {
+            _INSTANCES.add(ScoreboardFactory.get(fqClassName));
+            System.out.printf("Created new %s instance.", gameName);
+        }
+        return _INSTANCES.stream().findFirst().get();
+    }
     /**
      * to create a new game model and add it to score board
      *

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sr.entity.Team;
+import sr.game.Team;
 import sr.game.football.FootballGame;
 import sr.game.football.FootballScoreboard;
 import sr.util.FootballGameComparator;
@@ -27,11 +27,10 @@ import static org.mockito.Mockito.when;
 public class FootballScoreboardTests {
     @Spy
     static private FootballScoreboard scoreboard;
-
     static private Team homeTeam = null;
     static private Team awayTeam = null;
-    @Nested
 
+    @Nested
     class ScoreTests {
 
         private PriorityBlockingQueue<FootballGame> board = new PriorityBlockingQueue<>(7, FootballGameComparator.get());
