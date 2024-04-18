@@ -15,8 +15,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
@@ -109,23 +110,45 @@ public class FootballScoreboardTests {
     }
 
     @Test
-    @DisplayName("positive: finish game")
+    @DisplayName("positive: finish at least one game")
     public void finishGameTest() {
         when(scoreboard.getBoard()).thenReturn(board);
         startGames((short) 6);
         assignTeams();
         System.out.print("(homeTeam: " + homeTeam);
         System.out.println(" ; awayTeam: " + awayTeam + ")");
-        scoreboard.finishGame(homeTeam, awayTeam);
+        assertTrue(scoreboard.finishGame(homeTeam, awayTeam));
+    }
+
+    @Test
+    @DisplayName("alternate: finish no games")
+    public void finishNoGamesTest() {
+        when(scoreboard.getBoard()).thenReturn(board);
+        startGames((short) 6);
+        homeTeam = new Team("India");
+        awayTeam = new Team("Germany");
+        System.out.print("(homeTeam: " + homeTeam);
+        System.out.println(" ; awayTeam: " + awayTeam + ")");
+        assertFalse(scoreboard.finishGame(homeTeam, awayTeam));
     }
 
     @Test
     @DisplayName("positive: get game score summary")
     public void getScoreboardSummaryTest() {
-        scoreboard.getScoreboardSummary();
-        fail();
+        when(scoreboard.getBoard()).thenReturn(board);
+        matchSet = startGames((short) 17);
+        Random random = new Random();
+        for (GameMatch teamPair : matchSet) {
+            updateScores(new Team(teamPair.getHome()), (short) random.nextInt(12), new Team(teamPair.getAway()), (short) random.nextInt(6));
+        }
+        board.stream().forEach(System.out::print);
+        System.out.println("\nSummarized: " + scoreboard.getScoreboardSummary());
     }
 
+    private void updateScores(Team homeTeam, short team1Score, Team awayTeam, short team2Score) {
+        board.stream().filter(footballGame -> footballGame.getTeamOne().equals(homeTeam) && footballGame.getTeamTwo().equals(awayTeam)).findFirst().ifPresent(g -> g.setTeamOneScore(team1Score));
+        board.stream().filter(footballGame -> footballGame.getTeamOne().equals(homeTeam) && footballGame.getTeamTwo().equals(awayTeam)).findFirst().ifPresent(g -> g.setTeamTwoScore(team2Score));
+    }
     private Team[] assignTeams() {
         GameMatch matchPair = matchSet.stream().findAny().get();
         homeTeam = new Team(matchPair.getHome());
@@ -150,7 +173,7 @@ public class FootballScoreboardTests {
             }
         }
         board.stream().forEach(game -> System.out.print(game + "  game added!"));
-        System.out.println("board.size(): " + board.size());
+        System.out.println("\nboard.size(): " + board.size());
         System.out.println("matchSet.size(): " + matchSet.size());
 
         return matchSet;

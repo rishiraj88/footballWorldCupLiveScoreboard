@@ -6,6 +6,7 @@ import sr.entity.Team;
 import sr.util.FootballGameComparator;
 
 import java.time.OffsetDateTime;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,8 @@ public class FootballScoreboard implements Scoreboard {
     @Override
     public String getScoreboardSummary() {
         // format, sort and then return the scores of all ongoing matches
-        //board.stream().forEach(System.out::println);
-        return "";
+        StringBuffer sb = new StringBuffer("");
+        getBoard().stream().sorted(FootballGameComparator.get()).collect(Collectors.toCollection(() -> new LinkedBlockingDeque<>())).descendingIterator().forEachRemaining(footballGame -> sb.append(footballGame));
+        return sb.toString();
     }
 }
