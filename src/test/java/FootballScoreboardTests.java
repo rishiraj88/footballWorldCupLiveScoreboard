@@ -54,8 +54,7 @@ public class FootballScoreboardTests {
         @DisplayName("Update scores: negative: with home team null")
         public void updateScoresWithHomeTeamNullTest() {
             homeTeam = null;
-            System.out.print("(homeTeam: " + homeTeam);
-            System.out.println(" ; awayTeam: " + awayTeam + ")");
+            System.out.printf("(%s ; %s)", homeTeam, awayTeam);
             scoreboard.updateScore(null, (short) 2, awayTeam, (short) 7);
         }
 
@@ -63,8 +62,7 @@ public class FootballScoreboardTests {
         @DisplayName("Update scores: negative: with away team null")
         public void updateScoresWithAwayTeamNullTest() {
             awayTeam = null;
-            System.out.print("(homeTeam: " + homeTeam);
-            System.out.println(" ; awayTeam: " + awayTeam + ")");
+            System.out.printf("(%s ; %s)", homeTeam, awayTeam);
             scoreboard.updateScore(homeTeam, (short) 2, awayTeam, (short) 7);
         }
 
@@ -83,8 +81,7 @@ public class FootballScoreboardTests {
         @Test
         @DisplayName("Finish game: positive: finish at least one game")
         public void finishGameTest() {
-            System.out.print("(homeTeam: " + homeTeam);
-            System.out.println(" ; awayTeam: " + awayTeam + ")");
+            System.out.printf("(%s ; %s)", homeTeam, awayTeam);
             assertTrue(scoreboard.finishGame(homeTeam, awayTeam));
         }
 
@@ -93,8 +90,7 @@ public class FootballScoreboardTests {
         public void finishNoGamesTest() {
             homeTeam = new Team("India");
             awayTeam = new Team("Germany");
-            System.out.print("(homeTeam: " + homeTeam);
-            System.out.println(" ; awayTeam: " + awayTeam + ")");
+            System.out.printf("(%s ; %s)", homeTeam, awayTeam);
             assertFalse(scoreboard.finishGame(homeTeam, awayTeam));
         }
 
@@ -105,8 +101,8 @@ public class FootballScoreboardTests {
             for (GameMatch teamPair : matchSet) {
                 updateScores(new Team(teamPair.teamOne), (short) random.nextInt(12), new Team(teamPair.teamTwo), (short) random.nextInt(6));
             }
-            board.stream().forEach(System.out::print);
-            System.out.println("\nScore Summary: " + scoreboard.getScoreboardSummary());
+            board.stream().forEach(footballGame -> System.out.printf(footballGame.toString()));
+            System.out.printf("\nScore Summary: %s", scoreboard.getScoreboardSummary());
         }
 
         private void updateScores(Team homeTeam, short team1Score, Team awayTeam, short team2Score) {
@@ -137,9 +133,8 @@ public class FootballScoreboardTests {
                     boolean gameStarted = board.offer(new FootballGame(new Team(teamOne), new Team(teamTwo), true));
                 }
             }
-            board.stream().forEach(game -> System.out.print(game + "  game added!"));
-            System.out.println("\nboard.size(): " + board.size());
-            System.out.println("matchSet.size(): " + matchSet.size());
+            board.stream().forEach(game -> System.out.printf("%s game added!", game));
+            System.out.printf("\nboard.size(): %d :: matchSet.size(): %d", board.size(), matchSet.size());
             return matchSet;
         }
 

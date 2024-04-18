@@ -1,5 +1,5 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -10,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith({MockitoExtension.class})
 public class ScoreboardInstanceTests {
+    @AfterEach
+    public void destroy() {
+        Scoreboard.clearAll();
+    }
+
     @Test
     @DisplayName("Get instance: positive")
     public void getFootballScoreboardInstanceTest() {
@@ -22,9 +27,14 @@ public class ScoreboardInstanceTests {
         assertThrows(ClassNotFoundException.class, () -> Scoreboard.getInstance("Swimming"));
     }
 
-    @RepeatedTest(6)
+    @Test
     @DisplayName("Get instance: positive: get six instances of a single game type")
     public void getSixFootballScoreboardInstancesTest() {
+        assertDoesNotThrow(() -> Scoreboard.getInstance("Football"));
+        assertDoesNotThrow(() -> Scoreboard.getInstance("Football"));
+        assertDoesNotThrow(() -> Scoreboard.getInstance("Football"));
+        assertDoesNotThrow(() -> Scoreboard.getInstance("Football"));
+        assertDoesNotThrow(() -> Scoreboard.getInstance("Football"));
         assertDoesNotThrow(() -> Scoreboard.getInstance("Football"));
     }
 }

@@ -21,6 +21,12 @@ public interface Scoreboard {
         }
         return _INSTANCES.stream().findFirst().get();
     }
+
+    public static void clearAll() {
+        _INSTANCES.clear();
+    }
+    // clearAll(String gameName) method may also provided to remove only the instances for matching game type
+
     /**
      * to create a new game model and add it to score board
      *
