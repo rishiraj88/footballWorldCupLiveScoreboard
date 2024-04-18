@@ -15,7 +15,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
@@ -117,7 +116,7 @@ public class FootballScoreboardTests {
         assignTeams();
         System.out.print("(homeTeam: " + homeTeam);
         System.out.println(" ; awayTeam: " + awayTeam + ")");
-        assertDoesNotThrow(() -> scoreboard.finishGame(homeTeam, awayTeam));
+        scoreboard.finishGame(homeTeam, awayTeam);
     }
 
     @Test
