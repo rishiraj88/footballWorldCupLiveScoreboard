@@ -45,6 +45,7 @@ A number of sorting rules apply to resolve the order of team pairs for display o
 SR - The 21st SportsTech Co.
 
 # Contact Points
-
 - Project Portfolio: https://github.com/rishiraj88
 - Contact Card: https://bio.link/rishiraj49de
+- LinkedIn Profile: https://www.linkedin.com/in/rishirajopenminds
+- X: https://twitter.com/RishiRajDevOps
