@@ -1,6 +1,14 @@
 # footballWorldCupLiveScoreboard
 a data feed library for Live Score Board of Football World Cup
 
+## Implementation Tools
+
+- Java 17
+- Mockito for JUnit
+- IDE with JDK support
+- Maven for project object model and dependency management
+- lombok for quick data method and constructor facilitation
+
 ## What It Features
 
 1. _What it is:_ a live football World Cup Scoreboard
@@ -32,14 +40,6 @@ A number of sorting rules apply to resolve the order of team pairs for display o
 - If an ongoing game with a valid pair of team names is not found in internal data store, then the method used to update the scores finishes without any exception thrown. In short, scores are updated only for the ongoing games found in the internal store of data.
 - A simple implementation of finishing a game is implemented in this release. It approximates the finish time of the game to the system clock time at the moment of effecting such an update of game state. A more versatile implementation is also possible wherein the finish time for the game in question is to be supplied by the respective data provider (data source).
  
-## Implementation Tools
-
-- Java 17
-- Mockito for JUnit
-- IDE with JDK support
-- Maven for project object model and dependency management
-- lombok for quick data method and constructor facilitation
-
 # Who We Are
 
 SR - The 21st SportsTech Co.
