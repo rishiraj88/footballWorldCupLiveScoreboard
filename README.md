@@ -1,9 +1,8 @@
-# footballWorldCupLiveScoreboard
+# Football World Cup Live Scoreboard
 a data feed library for Live Score Board of Football World Cup
 
 ## Implementation Tools
-
-- Java 17
+- Java 25
 - Mockito for JUnit
 - IDE with JDK support
 - Maven for project object model and dependency management
