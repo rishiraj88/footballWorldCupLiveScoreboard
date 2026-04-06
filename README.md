@@ -3,7 +3,7 @@ a data feed library for Live Score Board of Football World Cup
 
 ## Implementation Tools
 - Java 25
-- Mockito for JUnit
+- JUnit with Mockito
 - IDE with JDK support
 - Maven for project object model and dependency management
 - lombok for quick data method and constructor facilitation
